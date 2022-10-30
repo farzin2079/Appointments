@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% for user in users %}
+        <fieldset>
+            <legend>{{ user["bussines"] }}</legend>
+            <form action="/add" method="post">
+                <input name="name" type="text" placeholder="name">
+                <input name="number" type="text" placeholder="number">
+                <br>
+                DATE
+                <br>
+                <input name="date" type="datetime-local">
+                <br>
+                <input name="Description" type="text" placeholder="why?(optional)">
+                <input name="id" value="{{ user['id'] }}" type="hidden">
+                <br>
+                <input type="submit">
+            </form>
+        </fieldset>
+        <br>
+        {% endfor %}
+{% endblock %}

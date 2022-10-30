@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <table>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>number</th>
+                <th>appointment</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment["name"] }}</td>
+                <td>{{ appointment["number"] }}</td>
+                <td>{{ appointment["date"] }}</td>
+                <td>{{ appointment["Description"] }}</td>
+                <td>
+                    <form action="/delete" method="post">
+                        <input name="id" value="{{ appointment['id'] }}" type="hidden">
+                        <input type="submit" value="delete">
+                    </form>
+                </td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

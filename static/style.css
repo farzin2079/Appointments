@@ -1,0 +1,45 @@
+header
+{
+    background-color: yellow;
+    text-align: center;
+}
+body
+{
+    text-align: center;
+    background-color: gold;
+    color: black;
+}
+input
+{
+    background-color:black;
+    color:white;
+}
+table
+{
+    border: 1px solid royalblue;
+    width:100%;
+    margin-top:10px;
+
+}
+th,td
+{
+    padding:10px;
+}
+tr
+{
+    border: 1px solid royalblue;
+}
+
+fieldset
+{
+    margin: 10px;
+    border: 2px double royalblue;
+}
+a
+{
+    margin: 0 10px 0 10px;
+    border: 1px double black;
+    padding: 2px 2px 0 2px;
+    background-color: gold;
+    text-decoration: none;
+}

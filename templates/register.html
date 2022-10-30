@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+        <fieldset>
+            <legend>register</legend>
+            <form action="/register" method="post">
+                <input name="username" type="text" placeholder="name" request>
+                <input name="number" type="text" placeholder="number" request>
+                <br>
+                <input name="bussines" type="text" placeholder="bussines" request>
+                <br>
+                <input name="password" type="password" placeholder="password" request>
+                <input name="confirmation" type="password" placeholder="confirmation" request>
+                <input type="submit">
+            </form>
+        </fieldset>
+        <br>
+{% endblock %}
