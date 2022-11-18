@@ -6,6 +6,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -34,6 +35,21 @@ def massage(massage):
 @app.route("/", methods=["GET", "POST"])
 def index():
     #take bussines names
+    """
+    maybe needed 
+    add close and open dynamic houre from users
+    
+    close = db.execute("SELECT close_time FROM users")
+    open = db.execute("SELECT open_time FROM users")
+    now = int(datetime.now().strftime('%H'))
+    free = 0
+    for i in open:
+        if now > int(i):
+            free = now
+            for j in close:
+                  j -= free
+                  """
+    
     users = db.execute("SELECT bussines,id FROM users")
     return render_template ("index.html", users=users)
 
@@ -50,15 +66,18 @@ def add():
 
         # trying to insert value
         try:
+            notunique = db.execute("SELECT * FROM appointments WHERE date = ?", date)
+            if notunique:
+                return massage("این ساعت پر است")
+            
             db.execute("INSERT INTO appointments ( name, number, date, Description, user_id) VALUES (?,?,?,?,?)", name, number, date, Description, user_id)
-            return massage("appointment add succesfull. thank you:)")
+            return massage("با موفقیت ثبت شد. ممنون(: ")
+        
         except:
             #check for why undone
             notunique = db.execute("SELECT * FROM appointments WHERE date = ?", date)
             if notunique:
-                return massage("appointment already taked")
-            else:
-                return massage("unsuccess. try agein!")
+                return massage("این ساعت پر است")
     else :
         return redirect("/")
 
@@ -72,28 +91,33 @@ def login():
         # Ensure username was submitted
         if not request.form.get("username"):
 
-            return massage("name is empty")
+            return massage("نام کاربری خالی است")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
 
-            return massage("pssword is empty")
+            return massage("رمز عبور خالی است")
 
         # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+        username = request.form.get("username")
+        user = db.execute("SELECT * FROM users WHERE username = ?", username)
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+        if len(user) != 1 or not check_password_hash(user[0]["hash"], request.form.get("password")):
 
-            return massage("invalid username and/or password")
+            return massage("نام کاربری و/یا رمز عبور نامعتبر است")
 
         #select values from list
-        try:
-            appointments = db.execute("SELECT * FROM appointments WHERE user_id = ?", rows[0]["id"])
-            # send user to list
-            return render_template("list.html", appointments=appointments)
-        except:
-            return massage("error. pleas call backups")
+        
+        appointments = db.execute("SELECT * FROM appointments WHERE user_id = ?", user[0]["id"])
+        # delete pass time 
+        for appointment in appointments:
+            if int(appointment['date']) < int(datetime.now().strftime("%H")):
+                db.execute("DELETE FROM appointments WHERE id = ?", appointment['id'])
+        
+        # send user to list
+        return render_template("list.html", appointments=appointments, user=user)
+        
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -117,14 +141,14 @@ def register():
             return massage("invalide confirmation")
 
         if password != confirmation:
-            return massage("password and confirmation not same")
+            return massage("رمز عبور و تکراررمز متفاوت است")
 
         hash = generate_password_hash(password)
         try :
             db.execute("INSERT INTO users (username,hash,bussines,number) VALUES (?,?,?,?)", username, hash, bussines, number)
             return redirect('/')
         except:
-            return massage("unsuccess. try agian")
+            return massage("ناموفق. دوباره امتحان کنید(نام کاربری را تغییر دهید)")
 
     else:
         return render_template("register.html")
@@ -133,14 +157,27 @@ def register():
 def delete():
     if (request.method == "POST"):
         id = request.form.get("id")
+        user_id = request.form.get("user_id")
+        uid = request.form.get("uid")
         if id:
+            
+                  
+            appointments = db.execute("SELECT * FROM appointments WHERE user_id = ?", uid)
+            user = db.execute("SELECT * FROM users WHERE id = ?", uid)
+            db.execute("DELETE FROM appointments WHERE id = ?", id)
+                
+            return render_template("list.html", appointments=appointments, user=user)
+
+            
+        elif user_id:
             try:
-                appointments = db.execute("SELECT user_id FROM appointments WHERE id = ?", id)
-                db.execute("DELETE FROM appointments WHERE id = ?", id)
-                return render_template("list.html", appointments=appointments)
+                db.execute("DELETE FROM users WHERE id = ?", user_id)
+                return redirect("/")
+            
             except:
-                return massage("unsuccess. try again")
+                return massage("ناموفق. دوباره امتحان کنید")
+                
         else:
-            return massage("ERROR. pleas call backups")
+            return massage("ارور. با پشتیبانی تماس بگیرید")
     else:
         return render_template("login.html")
