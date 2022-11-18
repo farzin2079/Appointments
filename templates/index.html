@@ -2,22 +2,56 @@
 
 {% block body %}
     {% for user in users %}
+    
         <fieldset>
             <legend>{{ user["bussines"] }}</legend>
             <form action="/add" method="post">
-                <input name="name" type="text" placeholder="name">
-                <input name="number" type="text" placeholder="number">
+                <input name="name" type="text" placeholder="اسم">
+                <input name="number" type="text" placeholder="شماره تلفن">
                 <br>
-                DATE
+                ساعت
                 <br>
-                <input name="date" type="datetime-local">
+                <div id="renderList" name="date"></div>
                 <br>
-                <input name="Description" type="text" placeholder="why?(optional)">
+                <textarea name="Description" type="text" placeholder="دلیل ملاقات(اختیاری)"></textarea>
                 <input name="id" value="{{ user['id'] }}" type="hidden">
                 <br>
-                <input type="submit">
+                
+                <input type="submit" value="اضافه کردن">
             </form>
-        </fieldset>
-        <br>
+            <br>
+        </fieldset>       
         {% endfor %}
+        <script>
+            var close = 20 ;
+            var open = 10 ;
+            (function(){
+                var ul = document.createElement('select');
+                ul.setAttribute('name','date');
+        
+                const d = new Date();
+                let s1 = d.getHours();
+                if (open > s1 ){
+                    s1 = open;
+                }
+                let s2 = close;
+                productList = [];
+                while (s1 < s2) {
+                    s1 ++
+                    productList.push(s1)
+                };
+        
+                document.getElementById('renderList').appendChild(ul);
+                productList.forEach(renderProductList);
+        
+                function renderProductList(element, index, arr) {
+                    var li = document.createElement('option');
+                    li.setAttribute('class','item');
+        
+                    ul.appendChild(li);
+        
+                    li.innerHTML= li.innerHTML + element;
+                }
+            })();
+        </script>
 {% endblock %}

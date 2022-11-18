@@ -2,16 +2,21 @@
 
 {% block body %}
         <fieldset>
-            <legend>register</legend>
+            <legend>ثبت نام</legend>
             <form action="/register" method="post">
-                <input name="username" type="text" placeholder="name" request>
-                <input name="number" type="text" placeholder="number" request>
+                <input name="username" type="text" placeholder="نام کاربری" request>
+                <input name="number" type="text" placeholder="شماره تماس" request>
                 <br>
-                <input name="bussines" type="text" placeholder="bussines" request>
+                <input name="bussines" type="text" placeholder="نام شغل" request>
+                <!-- maybe neeaded
+                <input name="open_hour" type="text" placeholder="ساعت باز کردن(قالب 24 ساعته)" request>
+                <input name="close_hour" type="text" placeholder="ساعت بستن کردن(قالب 24 ساعته)" request>
+                -->
                 <br>
-                <input name="password" type="password" placeholder="password" request>
-                <input name="confirmation" type="password" placeholder="confirmation" request>
-                <input type="submit">
+                <input name="password" type="password" placeholder="رمز عبور" request>
+                <input name="confirmation" type="password" placeholder="تکرار رمز عبور" request>
+                <br>
+                <input type="submit" value="ثبت نام">
             </form>
         </fieldset>
         <br>

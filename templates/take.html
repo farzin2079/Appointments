@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+   ul#proList{list-style-position: inside}
+   li.item{list-style:none; padding:5px;}
+</style>
+</head>
+<body>
+    <div id="renderList" name="date">
+
+    </div>
+</body>
+<script>
+    (function(){
+        var ul = document.createElement('select');
+        ul.setAttribute('id','proList');
+
+        const d = new Date();
+        let s1 = d.getHours();
+        var s2 = 18
+        productList = [];
+        while (s1 < s2) {
+            s1 ++
+            productList.push(s1)
+        }
+
+        document.getElementById('renderList').appendChild(ul);
+        productList.forEach(renderProductList);
+
+        function renderProductList(element, index, arr) {
+            var li = document.createElement('option');
+            li.setAttribute('class','item');
+
+            ul.appendChild(li);
+
+            li.innerHTML=li.innerHTML + element;
+        }
+    })();
+</script>
+</html>

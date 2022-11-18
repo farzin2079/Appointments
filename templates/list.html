@@ -1,29 +1,39 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <table>
+
+    <h3>
+        وارد شدید به نام  {{ user[0]['username'] }} 
+        <form method="post" action="/delete">
+            <input name="user_id" value="{{ user[0]['id'] }}" type="hidden">
+            <input type="submit" value="حذف">
+        </form>
+        <h3>
+    <table class="table">
         <thead>
             <tr>
-                <th>name</th>
-                <th>number</th>
-                <th>appointment</th>
-                <th>Description</th>
+                <th scope="col" class="col-sm-">اسم</th>
+                <th scope="col" class="col-sm-">شماره تلفن</th>
+                <th scope="col" class="col-sm-">نوبت</th>
+                <th scope="col" class="col-sm-">توضیحات</th>
             </tr>
         </thead>
         <tbody>
     {% for appointment in appointments %}
-            <tr>
-                <td>{{ appointment["name"] }}</td>
-                <td>{{ appointment["number"] }}</td>
-                <td>{{ appointment["date"] }}</td>
-                <td>{{ appointment["Description"] }}</td>
+          <tr>
+                <td>{{ appointment['name'] }}</td>
+                <td>{{ appointment['number'] }} </td>
+                <td>ساعت {{ appointment['date']}} </td>
+                <td>{{ appointment['Description']}} </td>
+                
                 <td>
-                    <form action="/delete" method="post">
+                    <form method="post" action="/delete">
                         <input name="id" value="{{ appointment['id'] }}" type="hidden">
-                        <input type="submit" value="delete">
+                        <input name="uid" value="{{ user[0]['id'] }}" type="hidden">
+                        <input type="submit" value="حذف">
                     </form>
-                </td>
-            </tr>
+                <td>
+          </tr>
     {% endfor %}
         </tbody>
     </table>

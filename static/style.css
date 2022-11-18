@@ -1,7 +1,14 @@
 header
 {
     background-color: yellow;
+}
+h1
+{
     text-align: center;
+}
+.drostart
+{
+    text-align: right;
 }
 body
 {
@@ -11,8 +18,7 @@ body
 }
 input
 {
-    background-color:black;
-    color:white;
+    margin: 5px;
 }
 table
 {
@@ -37,9 +43,16 @@ fieldset
 }
 a
 {
-    margin: 0 10px 0 10px;
-    border: 1px double black;
-    padding: 2px 2px 0 2px;
-    background-color: gold;
     text-decoration: none;
+}
+.icon
+{
+    max-width: 40px;
+}
+.dropdown{
+    background-color: none;
+}
+.btn
+{
+    background-color: none;
 }
